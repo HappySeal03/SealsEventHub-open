@@ -53,12 +53,6 @@ MAY THE BEST TEAM WIN!! 🔥`,
   return (
     <motion.div
       className="relative p-8 min-h-screen"
-      style={{
-        backgroundImage:
-          "url('https://media.discordapp.net/attachments/1291400293002514442/1353198369694290003/Untitled_design_1.png?ex=67e0c7b0&is=67df7630&hm=48396794d8672d28fd6094ce0ff0eee172df513de494a9b4d1ff927fa3f384cf&=&format=webp&quality=lossless&width=930&height=930')",
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-      }}
       initial={{ opacity: 0, y: 50 }} // Start position off-screen and with 0 opacity
       animate={{ opacity: 1, y: 0 }}  // Fade in and move up to original position
       transition={{
@@ -93,7 +87,7 @@ MAY THE BEST TEAM WIN!! 🔥`,
       <h1
         className="text-5xl font-semibold text-center mb-4 text-white"
         style={{
-          WebkitTextFillColor: 'black', // Black text fill color
+          WebkitTextFillColor: 'white', // Black text fill color
         }}
       >
         {event.title}
@@ -103,7 +97,7 @@ MAY THE BEST TEAM WIN!! 🔥`,
         <h3
           className="text-3xl font-semibold mb-2 text-white"
           style={{
-            WebkitTextFillColor: 'black', // Black text fill color
+            WebkitTextFillColor: 'white', // Black text fill color
           }}
         >
           🏆 Prize:
@@ -111,7 +105,7 @@ MAY THE BEST TEAM WIN!! 🔥`,
         <p
           className="text-white text-xl"
           style={{
-            WebkitTextFillColor: 'black', // Black text fill color
+            WebkitTextFillColor: 'white', // Black text fill color
           }}
         >
           {event.prize}
@@ -122,7 +116,7 @@ MAY THE BEST TEAM WIN!! 🔥`,
         <h3
           className="text-3xl font-semibold mb-2 text-white"
           style={{
-            WebkitTextFillColor: 'black', // Black text fill color
+            WebkitTextFillColor: 'white', // Black text fill color
           }}
         >
           📌 Details:
@@ -130,7 +124,7 @@ MAY THE BEST TEAM WIN!! 🔥`,
         <p
           className="text-white text-xl whitespace-pre-line"
           style={{
-            WebkitTextFillColor: 'black', // Black text fill color
+            WebkitTextFillColor: 'white', // Black text fill color
           }}
         >
           {event.fullMessage}

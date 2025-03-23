@@ -26,24 +26,21 @@ const Channels = () => {
   return (
     <div
       className="p-8 min-h-screen bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://media.discordapp.net/attachments/1291400293002514442/1353156545671860247/IMG_1403.jpg?ex=67e0a0bc&is=67df4f3c&hm=82f1ba855dd1ecc79deae75a179e0b5c1dbdb969c85f5754bd258d06612e77c4&=&format=webp&width=930&height=930')",
-      }}
     >
-      <h1 className="text-3xl font-bold text-center mb-8 text-black">Upcoming Events</h1>
+      <h3>TODO: put the events in actual channels</h3>
+      <h1 className="text-3xl font-bold text-center mb-8">Upcoming Events</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {channels.map((channel, index) => (
           <div
             key={index}
-            className="bg-white bg-opacity-75 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out flex flex-col"
+            className="border bg-opacity-75 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out flex flex-col"
           >
             <div className="p-6 flex-1">
               {/* Making the title more bold */}
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">{channel.title}</h2>
+              <h2 className="text-2xl font-bold mb-4">{channel.title}</h2>
               {/* Making the description less bold */}
-              <p className="text-xl font-medium text-black mb-4">{channel.description}</p>
+              <p className="text-xl font-medium mb-4">{channel.description}</p>
             </div>
 
             {/* Button container to ensure uniform alignment */}

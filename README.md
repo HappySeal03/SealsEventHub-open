@@ -26,7 +26,7 @@ Once that's done just use the `docker compose up` command to start it. This will
 
 **IMPORTANT**: make sure you change the JWT_SECRET value in /backend/rust_api/src/.env from the default one provided here as that is the key that will be used for encryption of the Tokens
 
-###Frontend
+### Frontend
 The frontend requires [Node.js](https://nodejs.org). Once installed, navigate to `/frontend/event-hub`  
 and run `npm i` to install all the necessary dependencies. At that point you can run the project locally with  
 `npm run dev` or on your local network with `npm run dev -- --host`  

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "../components/Button"; // Adjust path based on your structure
 
 const Announcements = () => {
   const [announcements, setAnnouncements] = useState([
@@ -32,15 +31,6 @@ const Announcements = () => {
             <p>{announcement.content}</p>
           </div>
         ))}
-      </div>
-      <div className="mt-4 flex gap-2">
-        <textarea
-          value={newAnnouncement}
-          onChange={(e) => setNewAnnouncement(e.target.value)}
-          placeholder="Post a new announcement..."
-          className="flex-grow p-2 border rounded-md bg-gray-800 text-white placeholder-gray-500"
-        />
-        <Button onClick={postAnnouncement}>Post</Button>
       </div>
     </div>
   );

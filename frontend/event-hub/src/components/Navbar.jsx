@@ -39,25 +39,6 @@ const Navbar = ({ openPopup }) => {
     function loginAndSignupButtons(classes) {
         return (
             <div className={classes}>
-                {/* Discord Icon */}
-                <a
-                    href="https://discord.gg/C7XPyTvzTN" // Replace with your Discord server link
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-gray-300 mr-3 transform transition-transform duration-200 ease-in-out hover:scale-110 active:animate-shake"
-                >
-                    <img
-                        src="https://static.vecteezy.com/system/resources/previews/018/930/500/non_2x/discord-logo-discord-icon-transparent-free-png.png" // Discord logo image URL
-                        alt="Discord"
-                        style={{
-                            width: '60px', // Doubled the icon size
-                            height: '60px',
-                            cursor: 'pointer',
-                        }}
-                        className="transform transition-transform duration-200 ease-in-out hover:scale-110 active:animate-shake"
-                    />
-                </a>
-
                 <button
                     onClick={() => openPopup('signin')}
                     className="text-white hover:bg-gray-700 px-4 py-2 rounded-md transform transition-transform duration-200 ease-in-out hover:scale-110 active:animate-shake"
