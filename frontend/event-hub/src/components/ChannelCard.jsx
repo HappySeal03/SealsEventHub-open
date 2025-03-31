@@ -7,7 +7,7 @@ const ChannelCard = ( {name, description, channel_id} ) => {
 const navigate = useNavigate();
 
   const handleCardClick = () => {
-       navigate(`/channels/${channel_id}`);
+       navigate(`/channels/${channel_id}`, { state: { name: name, description:description, channel_id: channel_id} } );
   };
 
   return (

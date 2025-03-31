@@ -42,7 +42,7 @@ CREATE TABLE Channels (
     channel_name VARCHAR(50) NOT NULL,
     channel_description TEXT,
     created_by INT REFERENCES Users(user_id) ON DELETE SET NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE event_invites (
@@ -74,7 +74,7 @@ CREATE TABLE Participants (
     event_id INT REFERENCES Events(event_id) ON DELETE CASCADE,
     team_id INT REFERENCES Teams(team_id) ON DELETE CASCADE,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50) CHECK(status IN ('registered', 'confirmed', 'eliminated', 'completed')) DEFAULT 'registered'
+    status VARCHAR(50) CHECK(status IN ('registered', 'confirmed', 'eliminated', 'completed')) DEFAULT 'registered',
     team_role VARCHAR(50) CHECK(status IN ('player', 'captain', 'substitute')) DEFAULT 'player'
 );
 

@@ -203,7 +203,41 @@ pub async fn leave_channel(_jwt_token: JwtToken, channel_to_leave_id: i32, db_cl
     }));
 }
 
+/*
+    Retrieves all channels a user is subscribed to
+*/
+#[get("/channels/get-my-channels")]
+pub async fn get_my_channels(_jwt_token: JwtToken, db_client: &State<DbClient>) -> Result<Json<Vec<ChannelData>>, Status> {
+    let client = db_client.client.lock().await;
 
+    //TO FINISH
+    let statement = client.prepare("
+    SELECT c.channel_id, c.channel_name, c.channel_description
+    FROM Channels c
+    JOIN event_channel_roles ecr ON c.channel_id = ecr.channel_id
+    WHERE ecr.user_id = $1
+    ").await
+    .map_err(|e| {
+        eprint!("Error with statement preparation: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    let rows = client.query(&statement, &[&_jwt_token.0.user_id]).await
+    .map_err(|e| {
+        eprint!("Error with query execution: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    let channels: Vec<ChannelData> = rows.into_iter().map(|row| {
+        ChannelData {
+            channel_id: row.get("channel_id"),
+            channel_name: row.get("channel_name"),
+            channel_description: row.get("channel_description"),
+        }
+    }).collect();
+
+    return Ok(Json(channels));
+}
 /*
     TODO
     /channes/post

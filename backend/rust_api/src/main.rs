@@ -33,6 +33,7 @@ async fn rocket() -> _ {
         .mount("/", routes![channels_api::delete_channel])
         .mount("/", routes![channels_api::join_channel])
         .mount("/", routes![channels_api::leave_channel])
+        .mount("/", routes![channels_api::get_my_channels])
         .mount("/", routes![permissions_management_api::change_permissions])
         .manage(db_client)
 }
