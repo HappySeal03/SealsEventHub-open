@@ -1,6 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import '../index.css';
+import InfoHeader from '../components/InfoHeader';
+import Announcements from '../components/Announcements';
+import EvenstList from '../components/EventsList';
 
 const ChannelPage = () => {
 
@@ -9,9 +12,11 @@ const ChannelPage = () => {
 
   return (
     <>
-        <h1>This will become the Channel page for event with id ${channel_id}</h1>
-        <h2>The Channel name is: {name}</h2>
-        <h2>The Channel description is: {description}</h2>
+      <InfoHeader title={name} description={description} />
+      <Announcements channel_id={channel_id}/>
+      <EvenstList list_title={"Active events"} />
+      <EvenstList list_title={"Upcoming events"} />
+      <EvenstList list_title={"Past events"} />
     </>
   )
 }
