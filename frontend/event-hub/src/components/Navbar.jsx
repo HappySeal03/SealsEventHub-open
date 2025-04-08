@@ -3,6 +3,7 @@ import { Turtle, Menu, X, User } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './Context/AuthContext';
+import { usePopup } from './Context/PopupContext';
 
 let navigationItems = [
     { label: "Home", href: "/homepage" },
@@ -11,10 +12,11 @@ let navigationItems = [
     { label: "Inbox", href: "/inbox" },
 ]
 
-const Navbar = ({ openPopup }) => {
+const Navbar = () => {
 
     const [mobileDrawerOpen, setmobileDrawerOpen] = useState(false);
     const [selectedTab, setSelectedTab] = useState("");
+    const { openPopup } = usePopup();
 
     const { user } = useAuth();
 

@@ -1,14 +1,27 @@
 import React from 'react';
 import { X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import LoginForm from './Popups/LoginForm';
 import SignUpForm from './Popups/SignUpForm';
 import ProfilePopup from './Popups/ProfilePopup';
+import { usePopup } from './Context/PopupContext';
 
-const PopupManager = ({ activePopup, closePopup }) => {
+const PopupManager = () => {
+
+  const { activePopup, closePopup, popupContent } = usePopup();
+
+  if (!activePopup) return null;
+
+  {/*TODO: stop passing closePopup and use the new context in the components themselves*/}
   const popupComponents = {
     signup: <SignUpForm closePopup={closePopup} />,
     signin: <LoginForm closePopup={closePopup} />,
     profile: <ProfilePopup closePopup={closePopup} />,
+    markdown: (
+      <div className="bg-gray-800 rounded-lg p-6">
+        <ReactMarkdown>TODO: create a proper component to render the markdown pop-up</ReactMarkdown>
+      </div>
+    ),
   };
 
   return (
