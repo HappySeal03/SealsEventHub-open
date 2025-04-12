@@ -15,12 +15,11 @@ CREATE TABLE Events (
     description TEXT,
     event_type VARCHAR(50) CHECK(event_type IN ('tournament', 'workshop', 'conference', 'other')) NOT NULL,
     event_specific_category VARCHAR(50) NOT NULL,
-    event_group VARCHAR(50) NOT NULL,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
     location VARCHAR(255),
-    players_in_teams INT NOT NULL,
-    subs_in_teams INT NOT NULL,
+    teams_size INT NOT NULL,
+    max_subs_amount INT NOT NULL,
     capacity INT NOT NULL,
     status VARCHAR(50) CHECK(status IN ('upcoming', 'ongoing', 'completed', 'canceled')) DEFAULT 'upcoming',
     event_channel INT NOT NULL,
@@ -102,4 +101,12 @@ CREATE TABLE Matches (
 
     -- Match type (team vs team, individual vs individual, team vs individual)
     match_type VARCHAR(50) CHECK(match_type IN ('Teams', 'Solo'))
+);
+
+CREATE TABLE Announcements (
+    announcement_id SERIAL PRIMARY KEY,
+    channel_id INT NOT NULL REFERENCES Channels(channel_id) ON DELETE CASCADE,
+    body TEXT NOT NULL,
+    posted_by INT REFERENCES Users(user_id) ON DELETE SET NULL,
+    posted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -14,9 +14,9 @@ const ChannelPage = () => {
     <>
       <InfoHeader title={name} description={description} />
       <Announcements channel_id={channel_id}/>
-      <EvenstList list_title={"Active events"} />
-      <EvenstList list_title={"Upcoming events"} />
-      <EvenstList list_title={"Past events"} />
+      <EvenstList list_title={"Ongoing events"} channel_id={channel_id} status={"ongoing"} />
+      <EvenstList list_title={"Upcoming events"} channel_id={channel_id} status={"upcoming"} />
+      <EvenstList list_title={"Past events"} channel_id={channel_id} status={"completed"} />
     </>
   )
 }

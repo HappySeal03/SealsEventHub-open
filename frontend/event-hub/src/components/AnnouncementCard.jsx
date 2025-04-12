@@ -20,7 +20,6 @@ const AnnouncementCard = ({ body }) => {
             h3: ({ children }) => <h3 className="text-1xl font-semibold">{children}</h3>,
             h4: ({ children }) => <h4 className="text-2xm font-semibold">{children}</h4>,
             h5: ({ children }) => <h5 className="text-1xm font-semibold">{children}</h5>,
-            
           }}>
             {truncatedBody}
         </ReactMarkdown>

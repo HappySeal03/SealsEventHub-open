@@ -1,6 +1,6 @@
 use rocket::{http::Status, serde::json::Json, State};
 use tokio_postgres::types::ToSql;
-use crate::{auth::JwtToken, database::DbClient, model::{EventRequestData, GenericResponse}, utils::get_channel_role};
+use crate::{auth::JwtToken, database::DbClient, model::{EventFetchData, EventRequestData, GenericResponse}, utils::get_channel_role};
 
 #[get("/test")]
 pub fn test() -> &'static str {
@@ -247,4 +247,64 @@ pub async fn delete_event(_jwt_token: JwtToken, event_to_delete_id: i32, db_clie
     return Ok(Json(GenericResponse {
         message: "Event deleted successfully".to_string()
     }));
+}
+
+#[post("/events/get-events", data = "<params>") ]
+pub async fn get_events(params: Json<EventFetchData>, db_client: &State<DbClient>) -> Result<Json<Vec<EventRequestData>>, Status> {
+    
+    //TODO: fix the "all" case
+    if !params.validate() {
+        return Err(Status::BadRequest);
+    }
+
+    let client = db_client.client.lock().await;
+
+    let statement = client.prepare("
+        SELECT
+        event_id,
+        name, 
+        description, 
+        event_type, 
+        event_specific_category, 
+        teams_size, 
+        max_subs_amount, 
+        capacity,
+        start_date, 
+        end_date, 
+        location
+        FROM events
+        WHERE event_channel = $1 AND status = $2
+        ").await
+        .map_err(|e|{
+            eprintln!("Error with statement preparation: {:?}", e);
+            Status::InternalServerError
+        })?;
+
+    let rows = client.query(&statement, &[&params.channel_id, &params.status]).await
+    .map_err(|e| {
+        eprint!("Error with query execution: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    let events: Vec<EventRequestData> = rows.into_iter().map(|row| {
+        EventRequestData {
+            name: row.get("name"),
+            description: row.get("description"),
+            event_type: row.get("event_type"),
+            event_specific_category: row.get("event_specific_category"),
+            teams_size: row.get("teams_size"),
+            max_subs_amount: row.get("max_subs_amount"),
+            capacity: row.get("capacity"),
+            start_date: row.get("start_date"),
+            end_date: row.get("end_date"),
+            location: row.get("location"),
+            id: row.get("event_id"),
+            status: None,
+            created_by: None,
+            event_channel: None,
+        }
+    }).collect();
+
+    return Ok(Json(events))
+
 }

@@ -9,6 +9,53 @@ pub struct GenericResponse {
 
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
+pub struct EventFetchData {
+    pub channel_id: Option<i32>,
+    pub status: Option<String>,
+}
+
+pub enum FetchStatusFilter {
+    All,
+    Upcoming,
+    Ongoing,
+    Completed,
+}
+
+impl FetchStatusFilter {
+    pub fn from_str(status_str: &str) -> Option<FetchStatusFilter> {
+        match status_str {
+            "all" => Some(FetchStatusFilter::All),
+            "upcoming" => Some(FetchStatusFilter::Upcoming),
+            "ongoing" => Some(FetchStatusFilter::Ongoing),
+            "completed" => Some(FetchStatusFilter::Completed),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match *self {
+            FetchStatusFilter::All => "all".to_string(),
+            FetchStatusFilter::Upcoming => "upcoming".to_string(),
+            FetchStatusFilter::Ongoing => "ongoing".to_string(),
+            FetchStatusFilter::Completed => "completed".to_string(),
+        } 
+    }
+}
+
+impl EventFetchData {
+    pub fn validate(&self) -> bool {
+        let en = match &self.status {
+            Some(status_str) => FetchStatusFilter::from_str(status_str),
+            None => return false,
+        };
+        
+        self.channel_id.is_some() && en.is_some()
+        
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
 pub struct EventRequestData {
     pub id: Option<i32>,
     pub name: Option<String>,
@@ -145,6 +192,26 @@ impl ChannelData {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct AnnouncementData {
+    pub channel_id: Option<i32>,
+    pub announcement: Option<String>
+}
+
+impl AnnouncementData {
+    pub fn validate(&self) -> bool {
+        self.channel_id.is_some() && self.channel_id.unwrap() > 0 &&
+        self.announcement.is_some() && !self.announcement.as_ref().unwrap().is_empty()
+    }
+}
+
+/*
+******************************************
+                ROLES
+******************************************
+*/
+
 pub enum WebsiteRole {
     Admin,
     User,
@@ -230,6 +297,15 @@ impl ChannelRole {
         match *self {
             ChannelRole::SuperAdmin => true,
             ChannelRole::Admin => true,
+            _ => false
+        }
+    }
+
+    pub fn can_post_announcements(&self) -> bool {
+        match *self {
+            ChannelRole::SuperAdmin => true,
+            ChannelRole::Admin => true,
+            ChannelRole::Organizer => true,
             _ => false
         }
     }

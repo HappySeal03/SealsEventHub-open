@@ -27,6 +27,7 @@ async fn rocket() -> _ {
         .mount("/", routes![events_management_api::create_new_event])
         .mount("/", routes![events_management_api::update_existing_event])
         .mount("/", routes![events_management_api::delete_event])
+        .mount("/", routes![events_management_api::get_events])
         .mount("/", routes![teams_api::create_new_team])
         .mount("/", routes![channels_api::create_new_channel])
         .mount("/", routes![channels_api::edit_channel])
@@ -34,6 +35,8 @@ async fn rocket() -> _ {
         .mount("/", routes![channels_api::join_channel])
         .mount("/", routes![channels_api::leave_channel])
         .mount("/", routes![channels_api::get_my_channels])
+        .mount("/", routes![channels_api::post_announcement])
+        .mount("/", routes![channels_api::get_announcements])
         .mount("/", routes![permissions_management_api::change_permissions])
         .manage(db_client)
 }

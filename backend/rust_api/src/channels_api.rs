@@ -1,5 +1,5 @@
 use rocket::{http::Status, serde::json::Json, State};
-use crate::{auth::JwtToken, database::DbClient, model::{ChannelData, GenericResponse}, utils::get_channel_role};
+use crate::{auth::JwtToken, database::DbClient, model::{AnnouncementData, ChannelData, GenericResponse}, utils::get_channel_role};
 
 /*
     Create a new channel.
@@ -238,8 +238,77 @@ pub async fn get_my_channels(_jwt_token: JwtToken, db_client: &State<DbClient>) 
 
     return Ok(Json(channels));
 }
+
 /*
-    TODO
     /channes/post
     Create a markdown post in the channel
 */
+#[post("/channels/post", data = "<announcement>")]
+pub async fn post_announcement(_jwt_token: JwtToken, announcement: Json<AnnouncementData>, db_client: &State<DbClient>) -> Result<Json<GenericResponse>, Status> {
+
+    if !announcement.validate() {
+        return Err(Status::BadRequest);
+    }
+
+    let client = db_client.client.lock().await;
+
+    let role = match get_channel_role(_jwt_token.0.user_id, announcement.channel_id.unwrap(), &client).await {
+        Ok(channel_role) => channel_role,
+        Err(e) => return Err(e)
+    };
+
+    if !role.can_post_announcements() {
+        return Err(Status::Unauthorized);
+    }
+
+    let statement = client.prepare("
+    INSERT INTO announcements (channel_id, body, posted_by)
+    VALUES ($1, $2, $3)
+    ").await
+    .map_err(|e| {
+        eprint!("Error with statement preparation: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    client.execute(&statement, &[&announcement.channel_id, &announcement.announcement, &_jwt_token.0.user_id]).await
+    .map_err(|e| {
+        eprint!("Error with query execution: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    return Ok(Json(GenericResponse {
+        message: "Announcement posted successfully".to_string()
+    }));
+}
+
+#[get("/channels/get-announcements/<channel_id>")]
+pub async fn get_announcements(channel_id: i32, db_client: &State<DbClient>) -> Result<Json<Vec<AnnouncementData>>, Status> {
+    
+    let client = db_client.client.lock().await;
+
+    let statement = client.prepare("
+    SELECT announcement_id, body
+    FROM announcements
+    WHERE channel_id = $1
+    ").await
+    .map_err(|e| {
+        eprint!("Error with statement preparation: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    let rows = client.query(&statement, &[&channel_id]).await
+    .map_err(|e| {
+        eprint!("Error with query execution: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    let announcements: Vec<AnnouncementData> = rows.into_iter().map(|row| {
+        AnnouncementData {
+            channel_id: row.get("announcement_id"),
+            announcement: row.get("body"),
+        }
+    }).collect();
+
+    return Ok(Json(announcements));
+
+}
