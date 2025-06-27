@@ -1,9 +1,18 @@
 import React from "react";
+import { useNavigate} from 'react-router';
 
 const EventCard = ({ event, status }) => {
 
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+       navigate(`/event/${event.id}`, { state: {} } );
+  };
+
   return (
-    <div className="min-w-sm max-w-sm rounded overflow-hidden shadow-lg bg-gray-800 text-white">
+    <div className="min-w-sm max-w-sm m-6 rounded overflow-hidden shadow-lg bg-gray-800 text-white transition-transform duration-200 ease-in-out hover:bg-gray-900 hover:scale-105"
+    onClick={handleCardClick}
+    >
       {/* Event Header */}
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold">{event.name}</h2>

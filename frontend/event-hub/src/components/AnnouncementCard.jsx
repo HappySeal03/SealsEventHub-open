@@ -10,7 +10,7 @@ const AnnouncementCard = ({ body }) => {
     const truncatedBody = body.length > maxLength ? body.slice(0, maxLength) + '...' : body;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4"
+    <div className="bg-gray-800 m-6 p-6 rounded-lg shadow-lg space-y-4 transition-transform duration-200 ease-in-out hover:bg-gray-900 hover:scale-105"
         onClick={() => openPopup('markdown', body)}
     >
       <div className="prose text-gray-300 break-words">

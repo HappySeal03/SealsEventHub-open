@@ -58,7 +58,7 @@ const Announcements = ({channel_id}) => {
     }
 
   return (
-    <div className="bg-gray-900 text-white p-4">
+    <div className="text-white p-4">
         <h1 className='text-2xl font-semibold'>Announcements</h1>
         <hr className="my-4 border-t-2 border-gray-500" />
         <div className="flex overflow-x-auto space-x-4 pb-4">

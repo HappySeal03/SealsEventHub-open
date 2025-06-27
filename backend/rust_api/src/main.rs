@@ -28,6 +28,7 @@ async fn rocket() -> _ {
         .mount("/", routes![events_management_api::update_existing_event])
         .mount("/", routes![events_management_api::delete_event])
         .mount("/", routes![events_management_api::get_events])
+        .mount("/", routes![events_management_api::get_event_info])
         .mount("/", routes![teams_api::create_new_team])
         .mount("/", routes![channels_api::create_new_channel])
         .mount("/", routes![channels_api::edit_channel])

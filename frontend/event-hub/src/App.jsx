@@ -28,7 +28,7 @@ const App = () => {
               <Route path="/channels/:channel_id" element={<ChannelPage />} />  
               <Route path="/teams" element={<Teams />} />
               <Route path="/inbox" element={<Inbox />} />
-              <Route path="/event/:eventId" element={<EventPage />} />
+              <Route path="/event/:id" element={<EventPage />} />
             </Routes>
           </div>
         </BrowserRouter>

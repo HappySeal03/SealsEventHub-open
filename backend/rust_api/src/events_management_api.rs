@@ -308,3 +308,62 @@ pub async fn get_events(params: Json<EventFetchData>, db_client: &State<DbClient
     return Ok(Json(events))
 
 }
+
+#[get("/events/get-event-info/<event_id>")]
+pub async fn get_event_info(event_id: i32, db_client: &State<DbClient>) -> Result<Json<EventRequestData>, Status> {
+
+    let client = db_client.client.lock().await;
+
+    let statement = client.prepare("
+        SELECT
+        event_id,
+        name, 
+        description, 
+        event_type, 
+        event_specific_category, 
+        teams_size, 
+        max_subs_amount, 
+        capacity,
+        start_date, 
+        end_date, 
+        location
+        FROM events
+        WHERE event_id = $1
+        ").await
+        .map_err(|e|{
+            eprintln!("Error with statement preparation: {:?}", e);
+            Status::InternalServerError
+        })?;
+
+    let rows = client.query(&statement, &[&event_id]).await
+    .map_err(|e| {
+        eprint!("Error with query execution: {:?}", e);
+        Status::InternalServerError
+    })?;
+
+    if let Some(row) = rows.get(0) {
+        let event = EventRequestData {
+            name: row.get("name"),
+            description: row.get("description"),
+            event_type: row.get("event_type"),
+            event_specific_category: row.get("event_specific_category"),
+            teams_size: row.get("teams_size"),
+            max_subs_amount: row.get("max_subs_amount"),
+            capacity: row.get("capacity"),
+            start_date: row.get("start_date"),
+            end_date: row.get("end_date"),
+            location: row.get("location"),
+            id: row.get("event_id"),
+            status: None,
+            created_by: None,
+            event_channel: None,
+        };
+        return Ok(Json(event));
+        
+    } else {
+        return Err(Status::NotFound);
+    }
+
+    
+
+}
